@@ -55,6 +55,13 @@
       "statusFinalizado": true,
       "categoria": "Estudos",
       "prioridade": "Alta"
+    },
+    {
+      "id": 10,
+      "descricao": "teste",
+      "statusFinalizado": false,
+      "categoria": "Casa",
+      "prioridade": "Alta"
     }
   ]
 }
