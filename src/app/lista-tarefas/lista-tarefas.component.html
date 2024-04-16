@@ -5,6 +5,7 @@
     </button>
   </div>
   <form @shownState class="formulario ff-prompt"
+    [@shakeAnimation]="formulario.value"
     [@formButton]="formulario.valid ? 'valid' : 'invalid'"
     [formGroup]="formulario"
     *ngIf="formAberto">
@@ -26,7 +27,7 @@
       formControlName="prioridade"
       [ngClass]="campoValidado('prioridade')"
     >
-      <option disabled value="">Selecione</option>
+      <option value="">Selecione</option>
       <option value="Alta">Alta</option>
       <option value="Normal">Normal</option>
       <option value="Baixa">Baixa</option>
@@ -41,7 +42,7 @@
       formControlName="categoria"
       [ngClass]="campoValidado('categoria')"
     >
-      <option disabled value="">Selecione</option>
+      <option value="">Selecione</option>
       <option value="Casa">Casa</option>
       <option value="Trabalho">Trabalho</option>
       <option value="Estudos">Estudos</option>
