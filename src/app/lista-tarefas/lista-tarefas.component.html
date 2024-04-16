@@ -9,6 +9,7 @@
     *ngIf="formAberto">
     <label for="descricao">Descrição da tarefa</label>
     <input required
+      id="descricao"
       type="text"
       formControlName="descricao"
       placeholder="Digite a tarefa"
@@ -20,6 +21,7 @@
     </app-mensagem>
     <label for="prioridade">Prioridade</label>
     <select required
+      id="prioridade"
       formControlName="prioridade"
       [ngClass]="campoValidado('prioridade')"
     >
@@ -34,6 +36,7 @@
     </app-mensagem>
     <label for="categoria">Categoria</label>
     <select required
+      id="categoria"
       formControlName="categoria"
       [ngClass]="campoValidado('categoria')"
     >
@@ -68,10 +71,22 @@
     <img src="assets/imagens/ilustracao-Tarefas.png"
         alt="Ilustração de um ambiente com mesa, computador, quadro e um vaso com planta">
   </div>
-  <div *ngIf="listaTarefas.length > 0, else semTarefas">
+
+  <div class="busca">
+    <p class="ff-prompt">Procurando o que fazer?</p>
+    <input
+      id="campo-busca"
+      type="text"
+      placeholder="Buscar tarefa"
+      [(ngModel)]="campoBusca"
+      (keyup)="filtrarTarefasPorDescricao(campoBusca)"
+    >
+  </div>
+  <div *ngIf="tarefasFiltradas.length > 0, else semTarefas">
     <div
+      @filterAnimation
       class="lista-tarefas card-{{ tarefa.categoria }}"
-      *ngFor="let tarefa of listaTarefas; let i = index"
+      *ngFor="let tarefa of tarefasFiltradas; let i = index"
       (mouseover)="indexTarefa = i"
       [@highlightedState]="indexTarefa === i ? 'highlighted' : 'default'">
       <div class="info-card">
