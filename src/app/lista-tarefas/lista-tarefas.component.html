@@ -5,10 +5,13 @@
     </button>
   </div>
   <form @shownState class="formulario ff-prompt"
+    [@shakeAnimation]="formulario.value"
+    [@formButton]="formulario.valid ? 'valid' : 'invalid'"
     [formGroup]="formulario"
     *ngIf="formAberto">
     <label for="descricao">Descrição da tarefa</label>
     <input required
+      id="descricao"
       type="text"
       formControlName="descricao"
       placeholder="Digite a tarefa"
@@ -20,10 +23,11 @@
     </app-mensagem>
     <label for="prioridade">Prioridade</label>
     <select required
+      id="prioridade"
       formControlName="prioridade"
       [ngClass]="campoValidado('prioridade')"
     >
-      <option disabled value="">Selecione</option>
+      <option value="">Selecione</option>
       <option value="Alta">Alta</option>
       <option value="Normal">Normal</option>
       <option value="Baixa">Baixa</option>
@@ -34,10 +38,11 @@
     </app-mensagem>
     <label for="categoria">Categoria</label>
     <select required
+      id="categoria"
       formControlName="categoria"
       [ngClass]="campoValidado('categoria')"
     >
-      <option disabled value="">Selecione</option>
+      <option value="">Selecione</option>
       <option value="Casa">Casa</option>
       <option value="Trabalho">Trabalho</option>
       <option value="Estudos">Estudos</option>
@@ -48,6 +53,7 @@
     </app-mensagem>
     <div class="botoes-form">
       <button
+        id="botao-salvar"
         (click)="salvarTarefa()"
         class="botao-form"
         [ngClass]="habilitarBotao()"
@@ -68,10 +74,22 @@
     <img src="assets/imagens/ilustracao-Tarefas.png"
         alt="Ilustração de um ambiente com mesa, computador, quadro e um vaso com planta">
   </div>
-  <div *ngIf="listaTarefas.length > 0, else semTarefas">
+
+  <div class="busca">
+    <p class="ff-prompt">Procurando o que fazer?</p>
+    <input
+      id="campo-busca"
+      type="text"
+      placeholder="Buscar tarefa"
+      [(ngModel)]="campoBusca"
+      (keyup)="filtrarTarefasPorDescricao(campoBusca)"
+    >
+  </div>
+  <div @listState *ngIf="tarefasFiltradas.length > 0, else semTarefas">
     <div
+      @filterAnimation
       class="lista-tarefas card-{{ tarefa.categoria }}"
-      *ngFor="let tarefa of listaTarefas; let i = index"
+      *ngFor="let tarefa of tarefasFiltradas; let i = index"
       (mouseover)="indexTarefa = i"
       [@highlightedState]="indexTarefa === i ? 'highlighted' : 'default'">
       <div class="info-card">
@@ -87,8 +105,8 @@
         <p class="status-tarefa">
           <button
             [ngClass]="(tarefa.statusFinalizado == true) ? 'icone-checked' : 'icone-unchecked'"
-            (click)="finalizarTarefa(tarefa.id)"
-            [@checkButton]="(tarefa.id === id ? 'checked' : 'unchecked')"
+            (click)="finalizarTarefa(tarefa)"
+            [@checkButton]="(tarefa.id === id  && estadoBotao ? 'checked' : 'unchecked')"
             >
           </button>
         </p>
@@ -106,7 +124,7 @@
             <img src="assets/icones/icone-editar.png" alt="Ícone de editar">
           </button>
           <button
-            (click)="excluirTarefa(tarefa.id)"
+            (click)="excluirTarefa(tarefa)"
             class="botao-deletar">
             <img src="assets/icones/icone-excluir.png" alt="Ícone de excluir">
           </button>
